@@ -39,8 +39,10 @@ class TestingResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\ViewColumn::make('deleted_at')
+                    ->label('ViewColumn')
                     ->view('test'),
                 Tables\Columns\TextColumn::make('created_at')
+                    //->label('TextColumn')
                     ->formatStateUsing(fn (string $state): \Illuminate\Contracts\View\View => view(
                         'test',
                         ['state' => $state],
@@ -54,8 +56,10 @@ class TestingResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
